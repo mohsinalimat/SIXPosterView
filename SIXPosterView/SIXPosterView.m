@@ -17,15 +17,17 @@ static NSInteger const SIXPosterView_tag = 1000;
 
 @property (nonatomic, strong) UIPageControl *pageControl;
 
-//@property (nonatomic, strong) UIImageView *leftView;
-//
-//@property (nonatomic, strong) UIImageView *middleView;
-//
-//@property (nonatomic, strong) UIImageView *rightView;
+@property (nonatomic, strong) UIImageView *leftView;
+
+@property (nonatomic, strong) UIImageView *middleView;
+
+@property (nonatomic, strong) UIImageView *rightView;
 
 @property (nonatomic, strong) NSArray *images;
 
 @property (nonatomic, strong) NSTimer *timer;
+
+@property (nonatomic, assign) NSInteger currentIndex;
 
 @end
 
@@ -36,6 +38,7 @@ static NSInteger const SIXPosterView_tag = 1000;
     if (!self) return nil;
     
     _images = images;
+    _currentIndex = 0;
     [self createHierarchy];
     return self;
 }
@@ -43,12 +46,9 @@ static NSInteger const SIXPosterView_tag = 1000;
 - (void)createHierarchy {
     [self addSubview:self.scrollView];
     
-    for (NSInteger i=0; i<_images.count; i++) {
-        UIImageView *imageView = [self createImageView];
-        imageView.image = _images[i];
-        imageView.tag = SIXPosterView_tag + i;
-        [_scrollView addSubview:imageView];
-    }
+    [self.scrollView addSubview:self.middleView];
+    [self.scrollView addSubview:self.leftView];
+    [self.scrollView addSubview:self.rightView];
     
     [self addSubview:self.pageControl];
     [self createTimer];
@@ -57,20 +57,51 @@ static NSInteger const SIXPosterView_tag = 1000;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    _scrollView.frame = self.bounds;
+    CGRect rect = self.bounds;
+    _scrollView.frame = rect;
     _scrollView.contentInset = UIEdgeInsetsZero;
-    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * _images.count, 0);
-    _pageControl.center = CGPointMake(self.center.x, self.bounds.size.height - 10);
+    _scrollView.contentSize = CGSizeMake(rect.size.width * 3, 0);
+    _pageControl.center = CGPointMake(self.center.x, rect.size.height - 10);
     
-    for (int i=0; i<_images.count; i++) {
-        UIImageView *imageView = [_scrollView viewWithTag:i+SIXPosterView_tag];
-        imageView.frame = CGRectMake(i*_scrollView.frame.size.width, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
-    }
+    _leftView.frame = rect;
+    rect.origin.x = rect.size.width;
+    _middleView.frame = rect;
+    rect.origin.x = 2*rect.size.width;
+    _rightView.frame = rect;
+    
+    [_scrollView setContentOffset:CGPointMake(rect.size.width, 0)];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSInteger index = scrollView.contentOffset.x/scrollView.frame.size.width;
-    _pageControl.currentPage = index;
+- (void)createTimer {
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(cutImage) userInfo:nil repeats:YES];
+}
+
+- (void)cutImage {
+    [_scrollView setContentOffset:CGPointMake(2*_scrollView.frame.size.width, 0) animated:YES];
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    [self scrollViewDidEndDecelerating:_scrollView];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (scrollView.contentOffset.x == 0) {
+        [_scrollView setContentOffset:CGPointMake(_scrollView.bounds.size.width, 0)];
+        _currentIndex--;
+        _middleView.image = [_images objectAtIndex:_currentIndex%_images.count];
+        _leftView.image = [_images objectAtIndex:(_currentIndex-1)%_images.count];
+        _rightView.image = [_images objectAtIndex:(_currentIndex+1)%_images.count];
+        _pageControl.currentPage = _currentIndex%_images.count;
+    }
+    if (scrollView.contentOffset.x == 2*scrollView.frame.size.width) {
+        [_scrollView setContentOffset:CGPointMake(_scrollView.bounds.size.width, 0)];
+        _currentIndex++;
+        _middleView.image = [_images objectAtIndex:_currentIndex%_images.count];
+        _leftView.image = [_images objectAtIndex:(_currentIndex-1)%_images.count];
+        _rightView.image = [_images objectAtIndex:(_currentIndex+1)%_images.count];
+        _pageControl.currentPage = _currentIndex%_images.count;
+    }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -82,6 +113,7 @@ static NSInteger const SIXPosterView_tag = 1000;
     [self createTimer];
 }
 
+#pragma mark - lazy load
 - (UIScrollView *)scrollView {
     if (!_scrollView) {
         _scrollView = [UIScrollView new];
@@ -101,17 +133,28 @@ static NSInteger const SIXPosterView_tag = 1000;
     return _pageControl;
 }
 
-- (void)createTimer {
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(cutImage) userInfo:nil repeats:YES];
+- (UIImageView *)middleView {
+    if (!_middleView) {
+        _middleView = [self createImageView];
+        _middleView.image = _images[0];
+    }
+    return _middleView;
 }
 
-- (void)cutImage {
-    NSInteger offNum = _pageControl.currentPage+1;
-    if (offNum >= _images.count) {
-        [_scrollView setContentOffset:CGPointMake(0, 0)];
-    } else {
-        [_scrollView setContentOffset:CGPointMake(offNum*_scrollView.bounds.size.width, 0) animated:YES];
+- (UIImageView *)leftView {
+    if (!_leftView) {
+        _leftView = [self createImageView];
+        _leftView.image = _images.lastObject;
     }
+    return _leftView;
+}
+
+- (UIImageView *)rightView {
+    if (!_rightView) {
+        _rightView = [self createImageView];
+        _rightView.image = _images[1];
+    }
+    return _rightView;
 }
 
 - (UIImageView *)createImageView {

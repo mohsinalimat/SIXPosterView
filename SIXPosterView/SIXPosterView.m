@@ -9,9 +9,9 @@
 #import "SIXPosterView.h"
 
 
-static NSInteger const SIXPosterView_tag = 1000;
-
-@interface SIXPosterView () <UIScrollViewDelegate>
+@interface SIXPosterView () <UIScrollViewDelegate> {
+    SIXPosterViewClickBlock _clickImageBlock;
+}
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 
@@ -39,6 +39,7 @@ static NSInteger const SIXPosterView_tag = 1000;
     
     _images = images;
     _currentIndex = 0;
+    _duration = 1;
     [self createHierarchy];
     return self;
 }
@@ -73,7 +74,10 @@ static NSInteger const SIXPosterView_tag = 1000;
 }
 
 - (void)createTimer {
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(cutImage) userInfo:nil repeats:YES];
+    if (_timer) {
+        _timer = nil;
+    }
+    _timer = [NSTimer scheduledTimerWithTimeInterval:_duration target:self selector:@selector(cutImage) userInfo:nil repeats:YES];
 }
 
 - (void)cutImage {
@@ -86,27 +90,23 @@ static NSInteger const SIXPosterView_tag = 1000;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.x == 0) {
-        [_scrollView setContentOffset:CGPointMake(_scrollView.bounds.size.width, 0)];
+    NSInteger number = scrollView.contentOffset.x/scrollView.frame.size.width;
+    if (number == 0) {
         _currentIndex--;
-        _middleView.image = [_images objectAtIndex:_currentIndex%_images.count];
-        _leftView.image = [_images objectAtIndex:(_currentIndex-1)%_images.count];
-        _rightView.image = [_images objectAtIndex:(_currentIndex+1)%_images.count];
-        _pageControl.currentPage = _currentIndex%_images.count;
-    }
-    if (scrollView.contentOffset.x == 2*scrollView.frame.size.width) {
-        [_scrollView setContentOffset:CGPointMake(_scrollView.bounds.size.width, 0)];
+    }else if (number == 2) {
         _currentIndex++;
-        _middleView.image = [_images objectAtIndex:_currentIndex%_images.count];
-        _leftView.image = [_images objectAtIndex:(_currentIndex-1)%_images.count];
-        _rightView.image = [_images objectAtIndex:(_currentIndex+1)%_images.count];
-        _pageControl.currentPage = _currentIndex%_images.count;
+    }else {
+        return;
     }
+    [_scrollView setContentOffset:CGPointMake(_scrollView.bounds.size.width, 0)];
+    _middleView.image = [_images objectAtIndex:_currentIndex%_images.count];
+    _leftView.image = [_images objectAtIndex:(_currentIndex-1)%_images.count];
+    _rightView.image = [_images objectAtIndex:(_currentIndex+1)%_images.count];
+    _pageControl.currentPage = _currentIndex%_images.count;
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     [_timer invalidate];
-    _timer = nil;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
@@ -157,9 +157,30 @@ static NSInteger const SIXPosterView_tag = 1000;
     return _rightView;
 }
 
+- (void)setDuration:(NSTimeInterval)duration {
+    _duration = duration;
+    [_timer invalidate];
+    [self createTimer];
+}
+
 - (UIImageView *)createImageView {
     UIImageView *view = [UIImageView new];
+    view.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+    [view addGestureRecognizer:tap];
     return view;
+}
+
+- (void)tapAction:(UITapGestureRecognizer *)tap {
+    if (_clickImageBlock) {
+        UIImageView *imageView = (UIImageView *)tap.view;
+        NSInteger index = [_images indexOfObject:imageView.image];
+        _clickImageBlock(index);
+    }
+}
+
+- (void)setClickImageBlock:(SIXPosterViewClickBlock)block {
+    _clickImageBlock = [block copy];
 }
 
 @end

@@ -8,8 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+
+typedef void (^SIXPosterViewClickBlock)(NSInteger index);
+
 @interface SIXPosterView : UIView
 
+/** images.count至少为3 */
 - (instancetype)initWithImages:(NSArray<UIImage *> *)images;
+
+- (void)setClickImageBlock:(SIXPosterViewClickBlock)block;
+
+@property (nonatomic, assign) NSTimeInterval duration;
 
 @end

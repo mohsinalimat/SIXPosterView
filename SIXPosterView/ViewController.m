@@ -32,27 +32,12 @@
     }
     _posterView = [[SIXPosterView alloc] initWithImages:mutArr.copy];
     _posterView.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, 250);
+    _posterView.duration = 2;
+    [_posterView setClickImageBlock:^(NSInteger index) {
+        NSLog(@"%ld", index);
+    }];
     [self.view addSubview:_posterView];
-    
-//    _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
-//    _imageView.center = self.view.center;
-//    _imageView.clipsToBounds = YES;
-//    _imageView.image = [UIImage imageNamed:@"image81"];
-//    _imageView.backgroundColor = [UIColor blackColor];
-//    [self.view addSubview:_imageView];
-//    
-//    _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 44)];
-//    _label.center = CGPointMake(self.view.center.x, self.view.center.y + 300);
-//    _label.text = @"UIViewContentModeScaleToFill";
-//    [self.view addSubview:_label];
 }
-
-//static NSInteger num = 1;
-//- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//    self.imageView.contentMode = num%3;
-//    _label.text = @[@"UIViewContentModeScaleToFill", @"UIViewContentModeScaleAspectFit", @"UIViewContentModeScaleAspectFill"][num%3];
-//    num++;
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

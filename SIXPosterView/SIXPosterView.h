@@ -20,4 +20,6 @@ typedef void (^SIXPosterViewClickBlock)(NSInteger index);
 
 @property (nonatomic, assign) NSTimeInterval duration;
 
+@property (nonatomic, assign, getter=isOpened) BOOL opened;
+
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA5390F81D9A472B006F4E02 /* SIXPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5390F71D9A472B006F4E02 /* SIXPageView.m */; };
 		EA83590C1D9951F400BD0960 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA83590B1D9951F400BD0960 /* main.m */; };
 		EA83590F1D9951F400BD0960 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA83590E1D9951F400BD0960 /* AppDelegate.m */; };
 		EA8359121D9951F400BD0960 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8359111D9951F400BD0960 /* ViewController.m */; };
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EA5390F61D9A472B006F4E02 /* SIXPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXPageView.h; sourceTree = "<group>"; };
+		EA5390F71D9A472B006F4E02 /* SIXPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXPageView.m; sourceTree = "<group>"; };
 		EA8359071D9951F400BD0960 /* SIXPosterView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SIXPosterView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA83590B1D9951F400BD0960 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA83590D1D9951F400BD0960 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -149,6 +152,8 @@
 			children = (
 				EA83593E1D99525100BD0960 /* SIXPosterView.h */,
 				EA83593F1D99525100BD0960 /* SIXPosterView.m */,
+				EA5390F61D9A472B006F4E02 /* SIXPageView.h */,
+				EA5390F71D9A472B006F4E02 /* SIXPageView.m */,
 			);
 			name = SIXPosterView;
 			sourceTree = "<group>";
@@ -285,6 +290,7 @@
 			files = (
 				EA8359121D9951F400BD0960 /* ViewController.m in Sources */,
 				EA83590F1D9951F400BD0960 /* AppDelegate.m in Sources */,
+				EA5390F81D9A472B006F4E02 /* SIXPageView.m in Sources */,
 				EA8359401D99525100BD0960 /* SIXPosterView.m in Sources */,
 				EA83590C1D9951F400BD0960 /* main.m in Sources */,
 			);
@@ -512,6 +518,7 @@
 				EA8359361D9951F400BD0960 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EA8359371D9951F400BD0960 /* Build configuration list for PBXNativeTarget "SIXPosterViewTests" */ = {
 			isa = XCConfigurationList;
@@ -520,6 +527,7 @@
 				EA8359391D9951F400BD0960 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EA83593A1D9951F400BD0960 /* Build configuration list for PBXNativeTarget "SIXPosterViewUITests" */ = {
 			isa = XCConfigurationList;
@@ -528,6 +536,7 @@
 				EA83593C1D9951F400BD0960 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

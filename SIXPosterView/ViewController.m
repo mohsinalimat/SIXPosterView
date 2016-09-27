@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "SIXPosterView.h"
+#import "SIXPageView.h"
 
 @interface ViewController ()
 
@@ -33,10 +34,24 @@
     _posterView = [[SIXPosterView alloc] initWithImages:mutArr.copy];
     _posterView.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, 250);
     _posterView.duration = 2;
+    
+    __weak typeof(self)weak_self = self;
     [_posterView setClickImageBlock:^(NSInteger index) {
-        NSLog(@"%ld", index);
+        weak_self.posterView.opened = !weak_self.posterView.opened;
     }];
     [self.view addSubview:_posterView];
+    
+    
+    SIXPageView *pageView = [[SIXPageView alloc] initWithFrame:CGRectMake(50, 400, 300, 30)];
+    pageView.pageNumber = 5;
+    pageView.userInteractionEnabled = YES;
+    [self.view addSubview:pageView];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    _posterView.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, 250);
 }
 
 - (void)didReceiveMemoryWarning {

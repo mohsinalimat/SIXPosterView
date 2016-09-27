@@ -7,6 +7,7 @@
 //
 
 #import "SIXPosterView.h"
+#import "SIXPageView.h"
 
 
 @interface SIXPosterView () <UIScrollViewDelegate> {
@@ -15,7 +16,7 @@
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 
-@property (nonatomic, strong) UIPageControl *pageControl;
+@property (nonatomic, strong) SIXPageView *pageView;
 
 @property (nonatomic, strong) UIImageView *leftView;
 
@@ -51,7 +52,7 @@
     [self.scrollView addSubview:self.leftView];
     [self.scrollView addSubview:self.rightView];
     
-    [self addSubview:self.pageControl];
+    [self addSubview:self.pageView];
     [self createTimer];
 }
 
@@ -62,7 +63,8 @@
     _scrollView.frame = rect;
     _scrollView.contentInset = UIEdgeInsetsZero;
     _scrollView.contentSize = CGSizeMake(rect.size.width * 3, 0);
-    _pageControl.center = CGPointMake(self.center.x, rect.size.height - 10);
+    _pageView.frame = CGRectMake(0, 0, 200, 30);
+    _pageView.center = CGPointMake(self.center.x, rect.size.height - 25);
     
     _leftView.frame = rect;
     rect.origin.x = rect.size.width;
@@ -75,6 +77,7 @@
 
 - (void)createTimer {
     if (_timer) {
+        [self.timer invalidate];
         _timer = nil;
     }
     _timer = [NSTimer scheduledTimerWithTimeInterval:_duration target:self selector:@selector(cutImage) userInfo:nil repeats:YES];
@@ -102,7 +105,7 @@
     _middleView.image = [_images objectAtIndex:_currentIndex%_images.count];
     _leftView.image = [_images objectAtIndex:(_currentIndex-1)%_images.count];
     _rightView.image = [_images objectAtIndex:(_currentIndex+1)%_images.count];
-    _pageControl.currentPage = _currentIndex%_images.count;
+    _pageView.currentPage = _currentIndex%_images.count;
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -110,7 +113,9 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    [self createTimer];
+    if (_opened) {
+       [self createTimer];
+    }
 }
 
 #pragma mark - lazy load
@@ -125,12 +130,20 @@
     return _scrollView;
 }
 
-- (UIPageControl *)pageControl {
-    if (!_pageControl) {
-        _pageControl = [UIPageControl new];
-        _pageControl.numberOfPages = _images.count;
+- (SIXPageView *)pageView {
+    if (!_pageView) {
+        _pageView = [SIXPageView new];
+//        _pageView.backgroundColor = [UIColor clearColor];
+        _pageView.pageNumber = _images.count;
+        __weak typeof(self)weak_self = self;
+        [_pageView setClickPageBlock:^(NSInteger index) {
+            _currentIndex = index;
+            weak_self.middleView.image = [weak_self.images objectAtIndex:_currentIndex%_images.count];
+            weak_self.leftView.image = [weak_self.images objectAtIndex:(_currentIndex-1)%_images.count];
+            weak_self.rightView.image = [weak_self.images objectAtIndex:(_currentIndex+1)%_images.count];
+        }];
     }
-    return _pageControl;
+    return _pageView;
 }
 
 - (UIImageView *)middleView {
@@ -165,7 +178,6 @@
 
 - (UIImageView *)createImageView {
     UIImageView *view = [UIImageView new];
-    view.userInteractionEnabled = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
     [view addGestureRecognizer:tap];
     return view;
@@ -181,6 +193,18 @@
 
 - (void)setClickImageBlock:(SIXPosterViewClickBlock)block {
     _clickImageBlock = [block copy];
+    _middleView.userInteractionEnabled =
+    _leftView.userInteractionEnabled =
+    _rightView.userInteractionEnabled = YES;
+}
+
+- (void)setOpened:(BOOL)opened {
+    _opened = opened;
+    if (opened == NO) {
+        [self.timer invalidate];
+    } else {
+        [self createTimer];
+    }
 }
 
 @end

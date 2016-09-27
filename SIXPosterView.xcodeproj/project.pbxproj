@@ -15,6 +15,7 @@
 		EA83591A1D9951F400BD0960 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8359181D9951F400BD0960 /* LaunchScreen.storyboard */; };
 		EA8359251D9951F400BD0960 /* SIXPosterViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8359241D9951F400BD0960 /* SIXPosterViewTests.m */; };
 		EA8359301D9951F400BD0960 /* SIXPosterViewUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA83592F1D9951F400BD0960 /* SIXPosterViewUITests.m */; };
+		EA8359401D99525100BD0960 /* SIXPosterView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA83593F1D99525100BD0960 /* SIXPosterView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		EA83592B1D9951F400BD0960 /* SIXPosterViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SIXPosterViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA83592F1D9951F400BD0960 /* SIXPosterViewUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SIXPosterViewUITests.m; sourceTree = "<group>"; };
 		EA8359311D9951F400BD0960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA83593E1D99525100BD0960 /* SIXPosterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXPosterView.h; sourceTree = "<group>"; };
+		EA83593F1D99525100BD0960 /* SIXPosterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXPosterView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,7 @@
 		EA8359091D9951F400BD0960 /* SIXPosterView */ = {
 			isa = PBXGroup;
 			children = (
+				EA83593D1D9951FD00BD0960 /* SIXPosterView */,
 				EA83590D1D9951F400BD0960 /* AppDelegate.h */,
 				EA83590E1D9951F400BD0960 /* AppDelegate.m */,
 				EA8359101D9951F400BD0960 /* ViewController.h */,
@@ -138,6 +142,15 @@
 				EA8359311D9951F400BD0960 /* Info.plist */,
 			);
 			path = SIXPosterViewUITests;
+			sourceTree = "<group>";
+		};
+		EA83593D1D9951FD00BD0960 /* SIXPosterView */ = {
+			isa = PBXGroup;
+			children = (
+				EA83593E1D99525100BD0960 /* SIXPosterView.h */,
+				EA83593F1D99525100BD0960 /* SIXPosterView.m */,
+			);
+			name = SIXPosterView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,6 +285,7 @@
 			files = (
 				EA8359121D9951F400BD0960 /* ViewController.m in Sources */,
 				EA83590F1D9951F400BD0960 /* AppDelegate.m in Sources */,
+				EA8359401D99525100BD0960 /* SIXPosterView.m in Sources */,
 				EA83590C1D9951F400BD0960 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

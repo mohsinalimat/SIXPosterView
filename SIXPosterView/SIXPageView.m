@@ -19,7 +19,7 @@ static NSInteger const PageViewTag = 1000;
     UIColor *_normalColor;
     UIColor *_selectedColor;
     SIXPageViewClickBlock _clickBlock;
-    BOOL _on;
+    BOOL _layoutSubviewsOrNo;
 }
 
 
@@ -32,7 +32,7 @@ static NSInteger const PageViewTag = 1000;
     self = [super initWithFrame:frame];
     if (self) {
         _duration = 0.8;
-        _on = YES;
+        _layoutSubviewsOrNo = YES;
         self.backgroundColor = [UIColor colorWithWhite:0.7 alpha:0.5];
     }
     return self;
@@ -41,11 +41,11 @@ static NSInteger const PageViewTag = 1000;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    if (_on) {
+    if (_layoutSubviewsOrNo) {
         self.layer.cornerRadius = self.bounds.size.height/2;
         [self becomeNormal];
     }
-    _on = YES;
+    _layoutSubviewsOrNo = YES;
 }
 
 - (UIImageView *)createImageView {
@@ -76,10 +76,10 @@ static NSInteger const PageViewTag = 1000;
 }
 
 - (void)setCurrentPage:(NSInteger)currentPage {
-    [UIView animateWithDuration:_duration*0.3f animations:^{
+    [UIView animateWithDuration:_duration*0.4f animations:^{
         [self becomeNormal];
     } completion:^(BOOL finished) {
-        [UIView animateWithDuration:_duration*0.7f animations:^{
+        [UIView animateWithDuration:_duration*0.6f animations:^{
             [self becomeSelected:currentPage];
         }];
     }];
@@ -103,7 +103,7 @@ static NSInteger const PageViewTag = 1000;
         imageView.frame = CGRectMake(0, 0, pageW, pageH);
         imageView.center = CGPointMake(i * (pageW+PageMargin) + pageW/2 + (self.bounds.size.width-(_pageNumber*pageW + (_pageNumber-1)*PageMargin))/2, self.bounds.size.height/2);
     }
-    _on = NO;
+    _layoutSubviewsOrNo = NO;
 }
 
 - (void)becomeSelected:(NSInteger)index {
@@ -125,11 +125,11 @@ static NSInteger const PageViewTag = 1000;
             imageView.center = CGPointMake(imageView.center.x  + (selImage.size.width- pageW)/2, self.bounds.size.height/2);
         }
     }
-    _on = NO;
+    _layoutSubviewsOrNo = NO;
 }
 
 - (void)setClickPageBlock:(SIXPageViewClickBlock)block {
-    _clickBlock = block;
+    _clickBlock = [block copy];
     for (int i=0; i<_pageNumber; i++) {
         [self viewWithTag:i+PageViewTag].userInteractionEnabled = YES;
     }

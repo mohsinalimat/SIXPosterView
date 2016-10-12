@@ -34,7 +34,7 @@
 //        [mutArr addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d", i+80]]];
         [mutArr addObject:[NSString stringWithFormat:@"image%d", i+80]];
     }
-    _posterView = [[SIXPosterView alloc] initWithImages:data];
+    _posterView = [SIXPosterView posterViewWithImages:data];
 
     _posterView.frame = CGRectMake(0, CGRectGetMaxY(self.navigationController.navigationBar.frame), self.view.bounds.size.width, 250);
     _posterView.duration = 4;

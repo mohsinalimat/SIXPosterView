@@ -9,7 +9,6 @@
 #import "SIXPosterView.h"
 #import <UIImageView+WebCache.h>
 
-
 @interface SIXPosterView () <UIScrollViewDelegate> {
     SIXPosterViewClickBlock _clickImageBlock;
 }
@@ -24,8 +23,6 @@
 
 @property (nonatomic, weak) UIImageView *backgroundImageView;
 
-@property (nonatomic, strong) NSArray *images;
-
 @property (nonatomic, strong) NSTimer *timer;
 
 @property (nonatomic, assign) NSInteger currentIndex;
@@ -35,21 +32,20 @@
 @implementation SIXPosterView
 
 + (instancetype)posterViewWithImages:(NSArray *)images {
-    return [[self alloc] initWithImages:images];
+    SIXPosterView *posterView = [[self alloc] init];
+    posterView.images = images;
+    return posterView;
 }
 
-- (instancetype)initWithImages:(NSArray *)images
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
+    self = [super initWithFrame:frame];
     if (self) {
-        _images = images;
         _currentIndex = 0;
         _duration = 2;
         _automaticScrollEnabled = NO;
+        _pageStyle = SIXPosterViewPageStyleCustom;
         [self setupViews];
-        if (_images.count > 1) {
-            [self createTimer];
-        }
     }
     return self;
 }
@@ -74,9 +70,18 @@
     UIImageView *rightView = [self createImageView];
     [scrollView addSubview:rightView];
     _rightView = rightView;
-    
+}
+
+- (void)setImages:(NSArray *)images {
+    _images = images;
+    if (_images.count == 0) {
+        return;
+    }
     [self updateImages];
     [self updatePageView];
+    if (_images.count > 1) {
+        [self createTimer];
+    }
 }
 
 - (void)layoutSubviews {
@@ -113,33 +118,38 @@
     NSInteger leftIndex = (self.currentIndex-1)%self.images.count;
     NSInteger rightIndex = (self.currentIndex+1)%self.images.count;
     
-    if ([self.images.firstObject isKindOfClass:[UIImage class]]) {
-        self.middleView.image = self.images[middleIndex];
-        self.leftView.image = self.images[leftIndex];
-        self.rightView.image = self.images[rightIndex];
-    } else if ([_images.firstObject isKindOfClass:[NSURL class]]) {
-        [self.middleView sd_setImageWithURL:self.images[middleIndex] placeholderImage:_placeholderImage];
-        [self.leftView sd_setImageWithURL:self.images[leftIndex] placeholderImage:_placeholderImage];
-        [self.rightView sd_setImageWithURL:self.images[rightIndex] placeholderImage:_placeholderImage];
-    } else if ([self.images.firstObject isKindOfClass:[NSString class]]) {
-        if ([self.images.firstObject containsString:@"http"]) {
-            [self.middleView sd_setImageWithURL:[NSURL URLWithString:self.images[middleIndex]] placeholderImage:_placeholderImage];
-            [self.leftView sd_setImageWithURL:[NSURL URLWithString:self.images[leftIndex]] placeholderImage:_placeholderImage];
-            [self.rightView sd_setImageWithURL:[NSURL URLWithString:self.images[rightIndex]] placeholderImage:_placeholderImage];
+    [self setImage:self.middleView withImage:self.images[middleIndex]];
+    [self setImage:self.leftView withImage:self.images[leftIndex]];
+    [self setImage:self.rightView withImage:self.images[rightIndex]];
+}
+
+- (void)setImage:(UIImageView *)imageView withImage:(id)image {
+    if ([image isKindOfClass:[UIImage class]]) {
+        imageView.image = image;
+    } else if ([image isKindOfClass:[NSURL class]]) {
+        [imageView sd_setImageWithURL:image placeholderImage:_placeholderImage];
+    } else if ([image isKindOfClass:[NSString class]]) {
+        if ([image containsString:@"http"]) {
+            [imageView sd_setImageWithURL:[NSURL URLWithString:image] placeholderImage:self.placeholderImage];
+        } else if ([image hasSuffix:@"png"] || [image hasSuffix:@"jpg"]) {
+            imageView.image = [UIImage imageNamed:image];
         } else {
-            self.middleView.image = [UIImage imageNamed:self.images[middleIndex]];
-            self.leftView.image = [UIImage imageNamed:self.images[leftIndex]];
-            self.rightView.image = [UIImage imageNamed:self.images[rightIndex]];
+            imageView.image = [UIImage imageWithContentsOfFile:image];
         }
     }
 }
 
 - (void)updatePageView {
+    if (_pageControl) {
+        [_pageControl removeFromSuperview];
+        _pageControl = nil;
+    }
+    if (_pageView) {
+        [_pageView removeFromSuperview];
+        _pageView = nil;
+    }
+    
     if (_pageStyle == SIXPosterViewPageStyleCustom) {
-        if (_pageControl) {
-            [_pageControl removeFromSuperview];
-            _pageControl = nil;
-        }
         SIXPageView *pageView = [SIXPageView new];
         pageView.pageNumber = _images.count;
         pageView.duration = MIN(0.8f, _duration*0.5);
@@ -153,10 +163,6 @@
         }];
         
     } else {
-        if (_pageView) {
-            [_pageView removeFromSuperview];
-            _pageView = nil;
-        }
         UIPageControl *pageControl = [[UIPageControl alloc] init];
         pageControl.numberOfPages = _images.count;
         pageControl.currentPage = 0;
@@ -180,20 +186,13 @@
 }
 
 - (void)createTimer {
-    if (_timer) {
-        [_timer invalidate];
-        _timer = nil;
+    if (_automaticScrollEnabled == NO && _timer == nil) {
+        _timer = [NSTimer scheduledTimerWithTimeInterval:_duration target:self selector:@selector(switchImage) userInfo:nil repeats:YES];
     }
-    _timer = [NSTimer scheduledTimerWithTimeInterval:_duration target:self selector:@selector(switchImage) userInfo:nil repeats:YES];
 }
 
 - (void)switchImage {
     [_scrollView setContentOffset:CGPointMake(2*_scrollView.frame.size.width, 0) animated:YES];
-}
-
-- (void)setDuration:(NSTimeInterval)duration {
-    _duration = duration;
-    [self createTimer];
 }
 
 - (UIImageView *)createImageView {
@@ -236,6 +235,13 @@
     [self setNeedsDisplay];
 }
 
+- (void)setDuration:(NSTimeInterval)duration {
+    _duration = duration;
+    [_timer invalidate];
+    _timer = nil;
+    [self createTimer];
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
@@ -266,9 +272,7 @@
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (_automaticScrollEnabled == NO) {
-        [self createTimer];
-    }
+    [self createTimer];
 }
 
 @end

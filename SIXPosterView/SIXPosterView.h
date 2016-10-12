@@ -16,11 +16,6 @@ typedef NS_ENUM(NSUInteger, SIXPosterViewPageStyle) {
     SIXPosterViewPageStyleSystem
 };
 
-typedef NS_ENUM(NSUInteger, SIXPosterViewDataStyle) {
-    SIXPosterViewDataStyleImage,
-    SIXPosterViewDataStyleURL
-};
-
 @class SIXPosterView;
 @protocol SIXPosterViewDelegate <NSObject>
 
@@ -29,10 +24,12 @@ typedef NS_ENUM(NSUInteger, SIXPosterViewDataStyle) {
 @end
 
 @interface SIXPosterView : UIView
-/** images中元素  可以是UIImage、NSURL、URLString、本地图片名称 */
+/** images中元素  可以是UIImage、NSURL、URLString、本地图片名称等常见形式 */
 + (instancetype)posterViewWithImages:(NSArray *)images;
 
-- (instancetype)initWithImages:(NSArray *)images;
+- (instancetype)initWithFrame:(CGRect)frame;
+
+@property (nonatomic, strong) NSArray *images;
 
 @property (nonatomic, strong) UIImage *placeholderImage;
 

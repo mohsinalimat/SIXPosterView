@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6FF4509522FA95FAFF8C56F4 /* libPods-SIXPosterView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6C49DDB3C12DACF0A6F0A8 /* libPods-SIXPosterView.a */; };
-		EA5390F81D9A472B006F4E02 /* SIXPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5390F71D9A472B006F4E02 /* SIXPageView.m */; };
+		EA5743931DADD7E000AF3AF1 /* SIXPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5743901DADD7E000AF3AF1 /* SIXPageView.m */; };
+		EA5743941DADD7E000AF3AF1 /* SIXPosterView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA5743921DADD7E000AF3AF1 /* SIXPosterView.m */; };
 		EA83590C1D9951F400BD0960 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA83590B1D9951F400BD0960 /* main.m */; };
 		EA83590F1D9951F400BD0960 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA83590E1D9951F400BD0960 /* AppDelegate.m */; };
 		EA8359121D9951F400BD0960 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8359111D9951F400BD0960 /* ViewController.m */; };
@@ -17,7 +18,6 @@
 		EA83591A1D9951F400BD0960 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8359181D9951F400BD0960 /* LaunchScreen.storyboard */; };
 		EA8359251D9951F400BD0960 /* SIXPosterViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8359241D9951F400BD0960 /* SIXPosterViewTests.m */; };
 		EA8359301D9951F400BD0960 /* SIXPosterViewUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA83592F1D9951F400BD0960 /* SIXPosterViewUITests.m */; };
-		EA8359401D99525100BD0960 /* SIXPosterView.m in Sources */ = {isa = PBXBuildFile; fileRef = EA83593F1D99525100BD0960 /* SIXPosterView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,8 +41,10 @@
 		2B6C49DDB3C12DACF0A6F0A8 /* libPods-SIXPosterView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SIXPosterView.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65E2BBEC851815779D1A5A3B /* Pods-SIXPosterView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SIXPosterView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SIXPosterView/Pods-SIXPosterView.debug.xcconfig"; sourceTree = "<group>"; };
 		775D9C6F983232FE4D86CB68 /* Pods-SIXPosterView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SIXPosterView.release.xcconfig"; path = "Pods/Target Support Files/Pods-SIXPosterView/Pods-SIXPosterView.release.xcconfig"; sourceTree = "<group>"; };
-		EA5390F61D9A472B006F4E02 /* SIXPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXPageView.h; sourceTree = "<group>"; };
-		EA5390F71D9A472B006F4E02 /* SIXPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXPageView.m; sourceTree = "<group>"; };
+		EA57438F1DADD7E000AF3AF1 /* SIXPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXPageView.h; sourceTree = "<group>"; };
+		EA5743901DADD7E000AF3AF1 /* SIXPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXPageView.m; sourceTree = "<group>"; };
+		EA5743911DADD7E000AF3AF1 /* SIXPosterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXPosterView.h; sourceTree = "<group>"; };
+		EA5743921DADD7E000AF3AF1 /* SIXPosterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXPosterView.m; sourceTree = "<group>"; };
 		EA8359071D9951F400BD0960 /* SIXPosterView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SIXPosterView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA83590B1D9951F400BD0960 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA83590D1D9951F400BD0960 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -59,8 +61,6 @@
 		EA83592B1D9951F400BD0960 /* SIXPosterViewUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SIXPosterViewUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA83592F1D9951F400BD0960 /* SIXPosterViewUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SIXPosterViewUITests.m; sourceTree = "<group>"; };
 		EA8359311D9951F400BD0960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EA83593E1D99525100BD0960 /* SIXPosterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIXPosterView.h; sourceTree = "<group>"; };
-		EA83593F1D99525100BD0960 /* SIXPosterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIXPosterView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,10 +174,10 @@
 		EA83593D1D9951FD00BD0960 /* SIXPosterView */ = {
 			isa = PBXGroup;
 			children = (
-				EA83593E1D99525100BD0960 /* SIXPosterView.h */,
-				EA83593F1D99525100BD0960 /* SIXPosterView.m */,
-				EA5390F61D9A472B006F4E02 /* SIXPageView.h */,
-				EA5390F71D9A472B006F4E02 /* SIXPageView.m */,
+				EA57438F1DADD7E000AF3AF1 /* SIXPageView.h */,
+				EA5743901DADD7E000AF3AF1 /* SIXPageView.m */,
+				EA5743911DADD7E000AF3AF1 /* SIXPosterView.h */,
+				EA5743921DADD7E000AF3AF1 /* SIXPosterView.m */,
 			);
 			name = SIXPosterView;
 			sourceTree = "<group>";
@@ -363,10 +363,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA5743941DADD7E000AF3AF1 /* SIXPosterView.m in Sources */,
+				EA5743931DADD7E000AF3AF1 /* SIXPageView.m in Sources */,
 				EA8359121D9951F400BD0960 /* ViewController.m in Sources */,
 				EA83590F1D9951F400BD0960 /* AppDelegate.m in Sources */,
-				EA5390F81D9A472B006F4E02 /* SIXPageView.m in Sources */,
-				EA8359401D99525100BD0960 /* SIXPosterView.m in Sources */,
 				EA83590C1D9951F400BD0960 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

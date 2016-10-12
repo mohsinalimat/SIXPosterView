@@ -65,6 +65,11 @@ static NSInteger const PageViewTag = 1000;
 - (void)setPageNumber:(NSInteger)pageNumber {
     _pageNumber = pageNumber;
     
+//    UIImage *image = SIXPageViewNormalImage;
+//    CGFloat pageW = image.size.width;
+//    CGFloat pageH = image.size.height;
+//    self.bounds = CGRectMake(0, 0, pageW*pageNumber+20, pageH+10);
+    
     for (int i=0; i<pageNumber; i++) {
         UIImageView *imageView = [self createImageView];
         imageView.image = SIXPageViewNormalImage;

@@ -132,9 +132,9 @@
         if ([image containsString:@"http"]) {
             [imageView sd_setImageWithURL:[NSURL URLWithString:image] placeholderImage:self.placeholderImage];
         } else if ([image hasSuffix:@"png"] || [image hasSuffix:@"jpg"]) {
-            imageView.image = [UIImage imageNamed:image];
-        } else {
             imageView.image = [UIImage imageWithContentsOfFile:image];
+        } else {
+            imageView.image = [UIImage imageNamed:image];
         }
     }
 }
@@ -198,12 +198,12 @@
 - (UIImageView *)createImageView {
     UIImageView *view = [UIImageView new];
     view.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageAction:)];
     [view addGestureRecognizer:tap];
     return view;
 }
 
-- (void)tapAction:(UITapGestureRecognizer *)tap {
+- (void)tapImageAction:(UITapGestureRecognizer *)tap {
     if (_clickImageBlock) {
         _clickImageBlock(self.currentIndex);
     }
@@ -273,6 +273,11 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     [self createTimer];
+}
+
+- (void)dealloc {
+    [_timer invalidate];
+    _timer = nil;
 }
 
 @end

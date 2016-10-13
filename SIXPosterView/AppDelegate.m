@@ -20,7 +20,7 @@
 //    for (int i=1; i<100; i++) {
 //        NSLog(@"%d, %d, %d", 10/i, i/10, i);
 //    }
-    NSLog(@"%d", -1/10);
+
     return YES;
 }
 
